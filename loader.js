@@ -16,9 +16,10 @@ const engine = new Engine(GODOT_CONFIG);
 			const url = URL_BASE + filename + '.part' + i;
 			const resp = await fetch(url);
 			if (!resp.ok) throw new Error('Couldn\'t download ' + url);
-			const buf = await response.arrayBuffer();
+			const buf = await resp.arrayBuffer();
 			parts.push(buf);
 			totalLength += buf.byteLength;
+			console.log("Download goes brrrr");
 		}
 		const merged = new Uint8Array(totalLength);
 		let offset = 0;
@@ -31,19 +32,19 @@ const engine = new Engine(GODOT_CONFIG);
 	async function start() {
 	  try {
 
-		const wasm = await fetchAndMerge(`${GAME_NAME}.wasm`, 9);
-		const pck = await fetchAndMerge(`${GAME_NAME}.pck`, 13);
+		const wasm = await fetchAndMerge(`Upload Labs.wasm`, 9);
+		const pck = await fetchAndMerge(`Upload Labs.pck`, 13);
 		const engine = new Engine(GODOT_CONFIG);
 		const _origFetch = window.fetch;
 		window.fetch = function (url, opts) {
 			if (typeof url === 'string') {
-				if (url.endsWidth('.wasm')) {
-					return Promise.resolve(new Response(wasmBuffer, {
+				if (url.endsWith('.wasm')) {
+					return Promise.resolve(new Response(wasm, {
 						status: 200,
 						headers: {'Content-Type':'application/wasm'},
 					}));
 				}
-				if (url.endsWidth('.pck')) {
+				if (url.endsWith('.pck')) {
 					return Promise.resolve(new Response(pck, {
 						status: 200,
 						headers: {'Content-Type':'application/octet-stream'},
@@ -51,16 +52,16 @@ const engine = new Engine(GODOT_CONFIG);
 				}
 			}
 		}
-		await engine.init(BASE_URL);
-		engine.copyToFS(`/${GAME_NAME}.pck`, pck);
+		await engine.init(URL_BASE);
+		engine.copyToFS(`/Upload Labs.pck`, pck);
 		await engine.startGame({
-			mainPack: `/${GAME_NAME}.pck`,
+			mainPack: `/Upload Labs.pck`,
 			onProgress: function (current,total) {}
 		});
 			  
 		  
 		  
-	  } catch (err) {
+	  } Catch (err) {
 		  console.error(err);
 	  }
 
