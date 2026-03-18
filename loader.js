@@ -4,7 +4,7 @@ const engine = new Engine(GODOT_CONFIG);
 (function () {							
 
 	const FILENAME = "";
-	const URL_BASE = "";
+	const URL_BASE = "https://cdn.jsdelivr.net/gh/thepwds/ulwebport/";
 	const GAME_NAME = "Upload Labs";
 	
 	function setStatusMode(mode) {}
@@ -13,7 +13,7 @@ const engine = new Engine(GODOT_CONFIG);
 		const parts = [];
 		let totalLength = 0;
 		for (let i = 1; i <= count; i++) {
-			const url = URL_BASE + FILENAME + '.part' + i;
+			const url = URL_BASE + filename + '.part' + i;
 			const resp = await fetch(url);
 			if (!resp.ok) throw new Error('Couldn\'t download ' + url);
 			const buf = await response.arrayBuffer();
@@ -31,8 +31,8 @@ const engine = new Engine(GODOT_CONFIG);
 	async function start() {
 	  try {
 
-		const wasm = await fetchAndMerge(`${GAME_NAME}.wasm`, 2);
-		const pck = await fetchAndMerge(`${GAME_NAME}.pck`, 8);
+		const wasm = await fetchAndMerge(`${GAME_NAME}.wasm`, 9);
+		const pck = await fetchAndMerge(`${GAME_NAME}.pck`, 13);
 		const engine = new Engine(GODOT_CONFIG);
 		const _origFetch = window.fetch;
 		window.fetch = function (url, opts) {
