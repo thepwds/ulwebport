@@ -61,7 +61,7 @@ const engine = new Engine(GODOT_CONFIG);
 			  
 		  
 		  
-	  } Catch (err) {
+	  } catch (err) {
 		  console.error(err);
 	  }
 
